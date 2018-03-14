@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.aimprosoft.alfresco</groupId>
+    <artifactId>signature-pdf</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <name>pdf signature</name>
+    <description>share and platform modules for signature pdf files</description>
+    <packaging>pom</packaging>
+
+    <parent>
+        <groupId>org.alfresco.maven</groupId>
+        <artifactId>alfresco-sdk-parent</artifactId>
+        <version>2.2.0</version>
+    </parent>
+    <properties>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>${alfresco.groupId}</groupId>
+                <artifactId>alfresco-platform-distribution</artifactId>
+                <version>${alfresco.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>${alfresco.groupId}</groupId>
+                <artifactId>alfresco-repository</artifactId>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-context</artifactId>
+                <version>3.2.17.RELEASE</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.alfresco.maven</groupId>
+                <artifactId>alfresco-rad</artifactId>
+                <version>2.2.0</version>
+                <scope>test</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <!-- If we are running tests then make the H2 Scripts available.
+             Note. tests are skipped when you are running -Prun -->
+        <dependency>
+            <groupId>${alfresco.groupId}</groupId>
+            <artifactId>alfresco-repository</artifactId>
+            <version>5.2.e</version>
+            <classifier>h2scripts</classifier>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.alfresco.maven.plugin</groupId>
+                <artifactId>alfresco-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>run</id>
+            <properties>
+                <maven.alfresco.includeWebResources>false</maven.alfresco.includeWebResources>
+            </properties>
+        </profile>
+    </profiles>
+
+  <modules>
+    <module>signature-pdf-platform-amp</module>
+    <module>signature-pdf-share-amp</module>
+  </modules>
+</project>

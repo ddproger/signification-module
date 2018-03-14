@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>signature-pdf-share-amp</artifactId>
+    <name>Alfresco Share JAR Module</name>
+    <packaging>amp</packaging>
+    <description>Sample Share JAR Module (to be included in the share.war) - part of AIO - SDK 3</description>
+
+    <parent>
+        <groupId>com.aimprosoft.alfresco</groupId>
+        <artifactId>signature-pdf</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
+    <properties>
+    </properties>
+
+    <!-- Following dependencies are needed for compiling Java code in src/main/java;
+         <scope>provided</scope> is inherited for each of the following;
+         for more info, please refer to alfresco-platform-distribution POM -->
+    <dependencies>
+        <dependency>
+            <groupId>${alfresco.groupId}</groupId>
+            <artifactId>share</artifactId>
+            <version>5.2.e</version>
+            <classifier>classes</classifier>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.extensions.surf</groupId>
+            <artifactId>spring-surf-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!-- Compress JavaScript files and store as *-min.js -->
+            <plugin>
+                <groupId>net.alchim31.maven</groupId>
+                <artifactId>yuicompressor-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+
+</project>
