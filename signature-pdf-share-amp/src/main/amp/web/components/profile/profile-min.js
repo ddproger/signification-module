@@ -24,8 +24,7 @@
  * @class Alfresco.UserProfile
  * @extends Alfresco.component.Base
  */
-(function()
-{
+(function () {
     /**
      * YUI Library aliases
      */
@@ -40,8 +39,7 @@
      * @return {Alfresco.UserProfile} The new UserProfile instance
      * @constructor
      */
-    Alfresco.UserProfile = function(htmlId)
-    {
+    Alfresco.UserProfile = function (htmlId) {
         Alfresco.UserProfile.superclass.constructor.call(this, "Alfresco.UserProfile", htmlId, ["button"]);
         return this;
     };
@@ -89,19 +87,24 @@
              *
              * @method onReady
              */
-            onReady: function UP_onReady()
-            {
+            onReady: function UP_onReady() {
                 // Allow edit if profile is editable
-                if (this.options.profile.isEditable)
-                {
+                if (this.options.profile.isEditable) {
                     // Buttons
                     this.widgets.upload = Alfresco.util.createYUIButton(this, "button-upload", this.onUpload);
                     this.widgets.clearphoto = Alfresco.util.createYUIButton(this, "button-clearphoto", this.onClearPhoto);
+                    //Sign image button
+                    this.widgets.upload = Alfresco.util.createYUIButton(this, "sign-image-upload", this.onUploadSignKey);
+                    this.widgets.clearphoto = Alfresco.util.createYUIButton(this, "button-clear-sign-image", this.onClearSignKey);
+                    //Sign key button
+                    this.widgets.upload = Alfresco.util.createYUIButton(this, "sign-key-upload", this.onUploadSignImage);
+                    this.widgets.clearphoto = Alfresco.util.createYUIButton(this, "button-clear-sign-key", this.onClearSignImage);
+
                     this.widgets.edit = Alfresco.util.createYUIButton(this, "button-edit", this.onEditProfile);
                     this.widgets.save = Alfresco.util.createYUIButton(this, "button-save", null,
                         {
                             type: "submit",
-                            additionalClass:"alf-primary-button"
+                            additionalClass: "alf-primary-button"
                         });
                     this.widgets.cancel = Alfresco.util.createYUIButton(this, "button-cancel", this.onCancel);
 
@@ -137,12 +140,10 @@
                 }
 
                 // If the profile is editable and the link includes a request to edit it, then reveal the edit form...
-                if (this.options.profile.isEditable && window.location.hash == "#edit")
-                {
+                if (this.options.profile.isEditable && window.location.hash == "#edit") {
                     this.onEditProfile();
                 }
-                else
-                {
+                else {
                     // Finally show the main component body here to prevent UI artifacts on YUI button decoration
                     Dom.removeClass(this.id + "-readview", "hidden");
                 }
@@ -158,8 +159,7 @@
              * @param e {object} DomEvent
              * @param p_obj {object} Object passed back from addListener method
              */
-            onEditProfile: function UP_onEditProfile(e, p_obj)
-            {
+            onEditProfile: function UP_onEditProfile(e, p_obj) {
                 // Hide view panel
                 Dom.addClass(this.id + "-readview", "hidden");
 
@@ -205,10 +205,8 @@
              * @param e {object} DomEvent
              * @param p_obj {object} Object passed back from addListener method
              */
-            onUpload: function UP_onUpload(e, p_obj)
-            {
-                if (this.fileUpload === null)
-                {
+            onUpload: function UP_onUpload(e, p_obj) {
+                if (this.fileUpload === null) {
                     this.fileUpload = Alfresco.getFileUploadInstance();
                 }
 
@@ -236,8 +234,7 @@
              * @param e {object} DomEvent
              * @param p_obj {object} Object passed back from addListener method
              */
-            onClearPhoto: function UP_onClearPhoto(e, p_obj)
-            {
+            onClearPhoto: function UP_onClearPhoto(e, p_obj) {
                 Alfresco.util.Ajax.request(
                     {
                         url: Alfresco.constants.PROXY_URI + "slingshot/profile/resetavatar/" + encodeURIComponent(this.options.userId),
@@ -245,12 +242,10 @@
                         requestContentType: Alfresco.util.Ajax.JSON,
                         successCallback:
                             {
-                                fn: function(res)
-                                {
+                                fn: function (res) {
                                     // replace all avatar image URLs with the updated one
                                     var photos = Dom.getElementsByClassName("photoimg", "img");
-                                    for (i in photos)
-                                    {
+                                    for (i in photos) {
                                         photos[i].src = Alfresco.constants.URL_RESCONTEXT + "components/images/no-user-photo-64.png";
                                     }
                                 },
@@ -265,17 +260,14 @@
              * @method onFileUploadComplete
              * @param complete {object} Object literal containing details of successful and failed uploads
              */
-            onFileUploadComplete: function UP_onFileUploadComplete(complete)
-            {
+            onFileUploadComplete: function UP_onFileUploadComplete(complete) {
                 var success = complete.successful.length;
-                if (success > 0)
-                {
+                if (success > 0) {
                     var noderef = complete.successful[0].nodeRef;
 
                     // replace all avatar image URLs with the updated one
                     var photos = Dom.getElementsByClassName("photoimg", "img");
-                    for (i in photos)
-                    {
+                    for (i in photos) {
                         photos[i].src = Alfresco.constants.PROXY_URI + "api/node/" + noderef.replace("://", "/") +
                             "/content/thumbnails/avatar?c=force";
                     }
@@ -292,6 +284,180 @@
                     Alfresco.util.Ajax.jsonRequest(config);
                 }
             },
+            /**
+             * Upload button click handler
+             *
+             * @method onUpload
+             * @param e {object} DomEvent
+             * @param p_obj {object} Object passed back from addListener method
+             */
+            onUploadSignKey: function UP_onUploadSignKey(e, p_obj) {
+                if (this.fileUpload === null) {
+                    this.fileUpload = Alfresco.getFileUploadInstance();
+                }
+
+                // Show uploader for single file select - override the upload URL to use avatar upload service
+                var uploadConfig =
+                    {
+                        flashUploadURL: "slingshot/profile/uploadsignkey",
+                        htmlUploadURL: "slingshot/profile/uploadsignkey.html",
+                        username: this.options.userId,
+                        mode: this.fileUpload.MODE_SINGLE_UPLOAD,
+                        onFileUploadComplete:
+                            {
+                                fn: this.onSignKeyUploadComplete,
+                                scope: this
+                            }
+                    };
+                this.fileUpload.show(uploadConfig);
+                Event.preventDefault(e);
+            },
+
+            /**
+             * Clear photo button click handler
+             *
+             * @method onClearPhoto
+             * @param e {object} DomEvent
+             * @param p_obj {object} Object passed back from addListener method
+             */
+            onClearSignKey: function UP_onClearSignKey(e, p_obj) {
+                Alfresco.util.Ajax.request(
+                    {
+                        // url: Alfresco.constants.PROXY_URI + "slingshot/profile/resetavatar/" + encodeURIComponent(this.options.userId),
+                        // method: Alfresco.util.Ajax.PUT,
+                        // requestContentType: Alfresco.util.Ajax.JSON,
+                        // successCallback:
+                        //     {
+                        //         fn: function(res)
+                        //         {
+                        //             // replace all avatar image URLs with the updated one
+                        //             var photos = Dom.getElementsByClassName("photoimg", "img");
+                        //             for (i in photos)
+                        //             {
+                        //                 photos[i].src = Alfresco.constants.URL_RESCONTEXT + "components/images/no-user-photo-64.png";
+                        //             }
+                        //         },
+                        //         scope: this
+                        //     }
+                    });
+            },
+            /**
+             * File Upload complete event handler
+             *
+             * @method onFileUploadComplete
+             * @param complete {object} Object literal containing details of successful and failed uploads
+             */
+            onSignKeyUploadComplete: function UP_onSignPictureUploadComplete(complete) {
+                var success = complete.successful.length;
+                if (success > 0) {
+                    var noderef = complete.successful[0].nodeRef;
+
+                    // replace all avatar image URLs with the updated one
+                    var photos = Dom.getElementsByClassName("photoimg", "img");
+                    for (i in photos) {
+                        photos[i].src = Alfresco.constants.PROXY_URI + "api/node/" + noderef.replace("://", "/") +
+                            "/content/thumbnails/signkey?c=force";
+                    }
+
+                    // call to update the user object - photo changes take effect immediately!
+                    var json = {};
+                    json[this.id + "-signkey"] = noderef;
+                    var config =
+                        {
+                            method: "POST",
+                            url: Dom.get(this.id + "-form").attributes.action.nodeValue,
+                            dataObj: json
+                        };
+                    Alfresco.util.Ajax.jsonRequest(config);
+                }
+            }, /**
+         * Upload button click handler
+         *
+         * @method onUpload
+         * @param e {object} DomEvent
+         * @param p_obj {object} Object passed back from addListener method
+         */
+        onUploadSignImage: function UP_onUploadSignImage(e, p_obj) {
+            if (this.fileUpload === null) {
+                this.fileUpload = Alfresco.getFileUploadInstance();
+            }
+
+            // Show uploader for single file select - override the upload URL to use avatar upload service
+            var uploadConfig =
+                {
+                    flashUploadURL: "slingshot/profile/uploadsignimage",
+                    htmlUploadURL: "slingshot/profile/uploadsignimage.html",
+                    username: this.options.userId,
+                    mode: this.fileUpload.MODE_SINGLE_UPLOAD,
+                    onFileUploadComplete:
+                        {
+                            fn: this.onSignPictureUploadComplete,
+                            scope: this
+                        }
+                };
+            this.fileUpload.show(uploadConfig);
+            Event.preventDefault(e);
+        },
+
+            /**
+             * Clear photo button click handler
+             *
+             * @method onClearPhoto
+             * @param e {object} DomEvent
+             * @param p_obj {object} Object passed back from addListener method
+             */
+            onClearSignImage: function UP_onClearSignImage(e, p_obj) {
+                Alfresco.util.Ajax.request(
+                    {
+                        // url: Alfresco.constants.PROXY_URI + "slingshot/profile/resetavatar/" + encodeURIComponent(this.options.userId),
+                        // method: Alfresco.util.Ajax.PUT,
+                        // requestContentType: Alfresco.util.Ajax.JSON,
+                        // successCallback:
+                        //     {
+                        //         fn: function(res)
+                        //         {
+                        //             // replace all avatar image URLs with the updated one
+                        //             var photos = Dom.getElementsByClassName("photoimg", "img");
+                        //             for (i in photos)
+                        //             {
+                        //                 photos[i].src = Alfresco.constants.URL_RESCONTEXT + "components/images/no-user-photo-64.png";
+                        //             }
+                        //         },
+                        //         scope: this
+                        //     }
+                    });
+            },
+
+            /**
+             * File Upload complete event handler
+             *
+             * @method onFileUploadComplete
+             * @param complete {object} Object literal containing details of successful and failed uploads
+             */
+            onSignPictureUploadComplete: function UP_onSignPictureUploadComplete(complete) {
+                var success = complete.successful.length;
+                if (success > 0) {
+                    var noderef = complete.successful[0].nodeRef;
+
+                    // replace all avatar image URLs with the updated one
+                    var photos = Dom.getElementsByClassName("signImg", "img");
+                    for (i in photos) {
+                        photos[i].src = Alfresco.constants.PROXY_URI + "api/node/" + noderef.replace("://", "/") +
+                            "/content/thumbnails/signimage?c=force";
+                    }
+
+                    // call to update the user object - photo changes take effect immediately!
+                    var json = {};
+                    json[this.id + "-signimage"] = noderef;
+                    var config =
+                        {
+                            method: "POST",
+                            url: Dom.get(this.id + "-form").attributes.action.nodeValue,
+                            dataObj: json
+                        };
+                    Alfresco.util.Ajax.jsonRequest(config);
+                }
+            },
 
             /**
              * Save Changes form submit success handler
@@ -299,25 +465,20 @@
              * @method onSuccess
              * @param response {object} Server response object
              */
-            onSuccess: function UP_onSuccess(response)
-            {
-                if (response)
-                {
+            onSuccess: function UP_onSuccess(response) {
+                if (response) {
                     // succesfully updated details - refresh the page with the new user details
-                    if (window.location.hash == "#edit")
-                    {
+                    if (window.location.hash == "#edit") {
                         // If the location has the #edit hash then we need to remove it so that we
                         // return to the read view...
-                        window.location = window.location.href.replace( /#.*/, "");
+                        window.location = window.location.href.replace(/#.*/, "");
                     }
-                    else
-                    {
+                    else {
                         location.reload(true);
                     }
 
                 }
-                else
-                {
+                else {
                     Alfresco.util.PopupManager.displayPrompt(
                         {
                             text: Alfresco.util.message("message.failure", this.name)
@@ -332,8 +493,7 @@
              * @param e {object} DomEvent
              * @param p_obj {object} Object passed back from addListener method
              */
-            onCancel: function UP_onCancel(e, p_obj)
-            {
+            onCancel: function UP_onCancel(e, p_obj) {
                 Dom.addClass(this.id + "-editview", "hidden");
                 Dom.removeClass(this.id + "-readview", "hidden");
             },
@@ -345,18 +505,16 @@
              * @param e {object} DomEvent
              * @param p_obj {object} Object passed back from addListener method
              */
-            onFollowing: function UP_onFollowing(e, p_obj)
-            {
+            onFollowing: function UP_onFollowing(e, p_obj) {
                 var webscript = "/api/subscriptions/" + encodeURIComponent(Alfresco.constants.USERNAME) +
                     "/" + (this.options.follows ? "unfollow" : "follow");
                 Alfresco.util.Ajax.jsonPost(
                     {
                         url: Alfresco.constants.PROXY_URI + webscript,
-                        dataObj: [ this.options.profile.name ],
+                        dataObj: [this.options.profile.name],
                         successCallback:
                             {
-                                fn: function()
-                                {
+                                fn: function () {
                                     window.location.reload();
                                 },
                                 scope: this
