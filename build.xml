@@ -3,7 +3,7 @@
 
 
     <!-- Set these as required -->
-    <property name="alfresco.install" value="/home/gerasymiuk/alfresco-community-full"/>
+    <property name="alfresco.install" value="/home/dgerasymiuk/alfresco--community-test"/>
     <property name="war.file" value="${alfresco.install}/tomcat/webapps"/>
     <property name="module.platform.id" value="signature-pdf-platform-amp"/>
     <property name="module.platform.version" value="1.0-SNAPSHOT"/>
@@ -19,8 +19,8 @@
 
     <property name="mmt.path" value="${alfresco.install}/bin/alfresco-mmt.jar"/>
 
-    <property name="mmt.share.install" value="install ${share.amp.file} ${war.file}/share.war -verbose -nobackup -force"/>
-    <property name="mmt.platform.install" value="install ${platform.amp.file} ${war.file}/alfresco.war -verbose -nobackup -force"/>
+    <property name="mmt.share.install" value="install ${share.amp.file} ${war.file}/share.war -directory -force -nobackup "/>
+    <property name="mmt.platform.install" value="install ${platform.amp.file} ${war.file}/alfresco.war -directory -force -nobackup "/>
 
     <target name="update-war" description="Update the WAR file." >
         <echo>Installing AMP ${share.amp.file} into WAR ${war.file}</echo>
