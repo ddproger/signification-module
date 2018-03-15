@@ -97,6 +97,13 @@
                     // Buttons
                     this.widgets.upload = Alfresco.util.createYUIButton(this, "button-upload", this.onUpload);
                     this.widgets.clearphoto = Alfresco.util.createYUIButton(this, "button-clearphoto", this.onClearPhoto);
+                    //Sign image button
+                    this.widgets.upload = Alfresco.util.createYUIButton(this, "sign-image-upload", this.onUploadSignKey);
+                    this.widgets.clearphoto = Alfresco.util.createYUIButton(this, "button-clear-sign-image", this.onClearSignKey);
+                    //Sign key button
+                    this.widgets.upload = Alfresco.util.createYUIButton(this, "sign-key-upload", this.onUploadSignImage);
+                    this.widgets.clearphoto = Alfresco.util.createYUIButton(this, "button-clear-sign-key", this.onClearSignImage);
+
                     this.widgets.edit = Alfresco.util.createYUIButton(this, "button-edit", this.onEditProfile);
                     this.widgets.save = Alfresco.util.createYUIButton(this, "button-save", null,
                         {

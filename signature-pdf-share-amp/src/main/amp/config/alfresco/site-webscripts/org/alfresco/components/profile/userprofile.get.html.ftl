@@ -46,13 +46,20 @@
                <div class="header-bar">${msg("label.about")}</div>
                <div class="photorow">
                    <div class="photo">
-                       <img class="photoimg" src="${url.context}<#if profile.properties.avatar??>/proxy/alfresco/api/node/${profile.properties.avatar?replace('://','/')}/content/thumbnails/avatar?c=force<#else>/res/components/images/no-user-photo-64.png</#if>" alt="" />
+                       <img class="photoimg"
+                            src="${url.context}<#if profile.properties.avatar??>/proxy/alfresco/api/node/${profile.properties.avatar?replace('://','/')}/content/thumbnails/avatar?c=force<#else>/res/components/images/no-user-photo-64.png</#if>"
+                            alt=""/>
                    </div>
                    <div class="namelabel">${displayname?html}</div>
-                  <#if profile.jobTitle?? && profile.jobTitle?length!=0><div class="fieldlabel">${profile.jobTitle?html}</div></#if>
-                  <#if profile.organization?? && profile.organization?length!=0><div class="fieldlabel">${profile.organization?html}</div></#if>
-                  <#if profile.location?? && profile.location?length!=0><div class="fieldlabel">${profile.location?html}</div></#if>
+                  <#if profile.jobTitle?? && profile.jobTitle?length!=0>
+                      <div class="fieldlabel">${profile.jobTitle?html}</div></#if>
+                  <#if profile.organization?? && profile.organization?length!=0>
+                      <div class="fieldlabel">${profile.organization?html}</div></#if>
+                  <#if profile.location?? && profile.location?length!=0>
+                      <div class="fieldlabel">${profile.location?html}</div></#if>
                </div>
+
+
                 <#if bio?? && bio?length!=0>
                <div class="biorow">
                    <hr/>
@@ -60,7 +67,17 @@
                </div>
                 </#if>
             </@markup>
-
+            <@markup id="viewSignature">
+                <div class="header-bar">${msg("label.signature")}</div>
+                <div class="photorow">
+                    <div class="photo">
+                        <img class="signImg"
+                             src="${url.context}<#if profile.properties.signImage??>/proxy/alfresco/slingshot/profile/signature/${profile.name}<#else>/res/components/images/no-user-photo-64.png</#if>"
+                             alt="signature image"/>
+                    </div>
+                    <div class="namelabel">Signature</div>
+                </div>
+            </@markup>
             <@markup id="viewContactInfo">
                <div class="header-bar">${msg("label.contactinfo")}</div>
                 <#if profile.email?? && profile.email?length!=0>
@@ -115,9 +132,12 @@
                 (profile.companyPostcode?? && profile.companyPostcode?length!=0)>
                <div class="row">
                    <span class="fieldlabelright">${msg("label.companyaddress")}:</span>
-                   <span class="fieldvalue"><#if profile.companyAddress1?? && profile.companyAddress1?length!=0>${profile.companyAddress1?html}<br /></#if>
-                     <#if profile.companyAddress2?? && profile.companyAddress2?length!=0>${profile.companyAddress2?html}<br /></#if>
-                     <#if profile.companyAddress3?? && profile.companyAddress3?length!=0>${profile.companyAddress3?html}<br /></#if>
+                   <span class="fieldvalue"><#if profile.companyAddress1?? && profile.companyAddress1?length!=0>${profile.companyAddress1?html}
+                       <br/></#if>
+                     <#if profile.companyAddress2?? && profile.companyAddress2?length!=0>${profile.companyAddress2?html}
+                         <br/></#if>
+                     <#if profile.companyAddress3?? && profile.companyAddress3?length!=0>${profile.companyAddress3?html}
+                         <br/></#if>
                      <#if profile.companyPostcode?? && profile.companyPostcode?length!=0>${profile.companyPostcode?html}</#if>
                   </span>
                </div>
@@ -148,43 +168,50 @@
          <div id="${el}-editview" class="hidden">
              <form id="${htmlid}-form" action="${url.context}/service/components/profile/userprofile" method="post">
 
+
              <#-- EDIT ABOUT -->
-            <@markup id="editAbout">
-            <div class="header-bar">${msg("label.about")}</div>
-            <div class="drow">
-                <div class="reqcolumn">&nbsp;</div>
-                <div class="leftcolumn">
-                    <span class="label"><label for="${el}-input-firstName">${msg("label.firstname")}:</label></span>
-                    <span><input type="text" maxlength="256" size="30" id="${el}-input-firstName" value="" <@immutablefield field="firstName" /> />&nbsp;*</span>
-                </div>
-                <div class="rightcolumn">
-                    <span class="label"><label for="${el}-input-lastName">${msg("label.lastname")}:</label></span>
-                    <span><input type="text" maxlength="256" size="30" id="${el}-input-lastName" value="" <@immutablefield field="lastName" /> /></span>
-                </div>
+        <@markup id="editAbout">
+        <div class="header-bar">${msg("label.about")}</div>
+        <div class="drow">
+            <div class="reqcolumn">&nbsp;</div>
+            <div class="leftcolumn">
+                <span class="label"><label for="${el}-input-firstName">${msg("label.firstname")}:</label></span>
+                <span><input type="text" maxlength="256" size="30" id="${el}-input-firstName"
+                             value="" <@immutablefield field="firstName" /> />&nbsp;*</span>
             </div>
-            <div class="drow">
-                <div class="reqcolumn">&nbsp;</div>
-                <div class="leftcolumn">
-                    <span class="label"><label for="${el}-input-jobtitle">${msg("label.jobtitle")}:</label></span>
-                    <span><input type="text" maxlength="256" size="30" id="${el}-input-jobtitle" value="" <@immutablefield field="jobtitle" /> /></span>
-                </div>
-                <div class="rightcolumn">
-                    <span class="label"><label for="${el}-input-location">${msg("label.location")}:</label></span>
-                    <span><input type="text" maxlength="256" size="30" id="${el}-input-location" value="" <@immutablefield field="location" /> /></span>
-                </div>
+            <div class="rightcolumn">
+                <span class="label"><label for="${el}-input-lastName">${msg("label.lastname")}:</label></span>
+                <span><input type="text" maxlength="256" size="30" id="${el}-input-lastName"
+                             value="" <@immutablefield field="lastName" /> /></span>
             </div>
-            <div class="row">
-                <span class="label"><label for="${el}-input-bio">${msg("label.bio")}:</label></span>
-                <span><textarea id="${el}-input-bio" name="${el}-text-biography" rows="5" cols="60"></textarea></span>
+        </div>
+        <div class="drow">
+            <div class="reqcolumn">&nbsp;</div>
+            <div class="leftcolumn">
+                <span class="label"><label for="${el}-input-jobtitle">${msg("label.jobtitle")}:</label></span>
+                <span><input type="text" maxlength="256" size="30" id="${el}-input-jobtitle"
+                             value="" <@immutablefield field="jobtitle" /> /></span>
             </div>
-            </@markup>
+            <div class="rightcolumn">
+                <span class="label"><label for="${el}-input-location">${msg("label.location")}:</label></span>
+                <span><input type="text" maxlength="256" size="30" id="${el}-input-location"
+                             value="" <@immutablefield field="location" /> /></span>
+            </div>
+        </div>
+        <div class="row">
+            <span class="label"><label for="${el}-input-bio">${msg("label.bio")}:</label></span>
+            <span><textarea id="${el}-input-bio" name="${el}-text-biography" rows="5" cols="60"></textarea></span>
+        </div>
+        </@markup>
 
              <#-- EDIT PHOTO -->
             <@markup id="editPhoto">
             <div class="header-bar">${msg("label.photo")}</div>
             <div class="photorow">
                 <div class="photo">
-                    <img class="photoimg" src="${url.context}<#if profile.properties.avatar??>/proxy/alfresco/api/node/${profile.properties.avatar?replace('://','/')}/content/thumbnails/avatar?c=force<#else>/res/components/images/no-user-photo-64.png</#if>" alt="" />
+                    <img class="photoimg"
+                         src="${url.context}<#if profile.properties.avatar??>/proxy/alfresco/api/node/${profile.properties.avatar?replace('://','/')}/content/thumbnails/avatar?c=force<#else>/res/components/images/no-user-photo-64.png</#if>"
+                         alt=""/>
                 </div>
                 <div class="photobtn">
             <#if uploadable>
@@ -200,33 +227,83 @@
                 </div>
             </div>
             </@markup>
+             <#-- EDIT SIGNATURE -->
+            <@markup id="editSignature">
+            <div class="header-bar">${msg("label.signature")}</div>
+            <div class="photorow">
+                <div class="photo">
+                    <img class="signImg"
+                         src="${url.context}<#if profile.properties.signImage??>/proxy/alfresco/slingshot/profile/signature/${profile.name}<#else>/res/components/images/no-user-photo-64.png</#if>"
+                         alt="signature image"/>
+                </div>
+                <div class="photobtn">
+            <#if uploadable>
+                  <span class="yui-button yui-push-button" id="${el}-sign-image-upload">
+                     <span class="first-child"><button>${msg("button.upload")}</button></span>
+                  </span>
+            </#if>
+                    <span class="yui-button yui-push-button" id="${el}-button-clear-sign-image">
+                     <span class="first-child"><button>${msg("button.signature.delete")}</button></span>
+                  </span>
+                    <div class="phototxt">${msg("label.signature.photoimagesize")}</div>
+                    <div class="phototxt">${msg("label.signature.photonote")}</div>
+                </div>
+            </div>
 
+            <div class="photorow">
+                <span class="sign-view">
+                    <span class="sign-label">Type:</span>
+                    <span class="sign-field">X.509</span><br>
+                    <span class="sign-label">Owner:</span>
+                    <span class="sign-field">owner info</span><br>
+                    <span class="sign-label">Algorithm:</span>
+                    <span class="sign-field">SHA1withRSA</span><br>
+                    <#if uploadable>
+                      <span class="yui-button yui-push-button" id="${el}-sign-key-upload">
+                            <span class="first-child"><button>${msg("button.upload")}</button></span>
+                      </span>
+                    </#if>
+                    <span class="yui-button yui-push-button" id="${el}-button-clear-sign-key">
+                        <span class="first-child"><button>${msg("button.signature.delete")}</button></span>
+                    </span>
+                </span>
+
+            </div>
+
+            </@markup>
              <#-- EDIT CONTACT INFO -->
             <@markup id="editContactInfo">
             <div class="header-bar">${msg("label.contactinfo")}</div>
             <div class="row">
                 <span class="label"><label for="${el}-input-telephone">${msg("label.telephone")}:</label></span>
-                <span><input type="text" maxlength="256" size="30" id="${el}-input-telephone" value="" <@immutablefield field="telephone" /> /></span>
+                <span><input type="text" maxlength="256" size="30" id="${el}-input-telephone"
+                             value="" <@immutablefield field="telephone" /> /></span>
             </div>
             <div class="row">
                 <span class="label"><label for="${el}-input-mobile">${msg("label.mobile")}:</label></span>
-                <span><input type="text" maxlength="256" size="30" id="${el}-input-mobile" value="" <@immutablefield field="mobile" /> /></span>
+                <span><input type="text" maxlength="256" size="30" id="${el}-input-mobile"
+                             value="" <@immutablefield field="mobile" /> /></span>
             </div>
             <div class="row">
                 <span class="label"><label for="${el}-input-email">${msg("label.email")}:</label></span>
-                <span><input type="text" maxlength="256" size="30" id="${el}-input-email" value="" <@immutablefield field="email" /> />&nbsp;*</span>
+                <span><input type="text" maxlength="256" size="30" id="${el}-input-email"
+                             value="" <@immutablefield field="email" /> />&nbsp;*</span>
             </div>
             <div class="row">
                 <span class="label"><label for="${el}-input-skype">${msg("label.skype")}:</label></span>
-                <span><input type="text" maxlength="256" size="30" id="${el}-input-skype" value="" <@immutablefield field="skype" /> /></span>
+                <span><input type="text" maxlength="256" size="30" id="${el}-input-skype"
+                             value="" <@immutablefield field="skype" /> /></span>
             </div>
             <div class="row">
                 <span class="label"><label for="${el}-input-instantmsg">${msg("label.im")}:</label></span>
-                <span><input type="text" maxlength="256" size="30" id="${el}-input-instantmsg" value="" <@immutablefield field="instantmsg" /> /></span>
+                <span><input type="text" maxlength="256" size="30" id="${el}-input-instantmsg"
+                             value="" <@immutablefield field="instantmsg" /> /></span>
             </div>
             <div class="row">
-                <span class="label"><label for="${el}-input-googleusername">${msg("label.googleusername")}:</label></span>
-                <span><input type="text" maxlength="256" size="30" id="${el}-input-googleusername" value="" <@immutablefield field="googleusername" /> /></span>
+                <span class="label"><label
+                        for="${el}-input-googleusername">${msg("label.googleusername")}:</label></span>
+                <span><input type="text" maxlength="256" size="30" id="${el}-input-googleusername"
+                             value="" <@immutablefield field="googleusername" /> /></span>
             </div>
             </@markup>
 
@@ -235,35 +312,45 @@
             <div class="header-bar">${msg("label.companyinfo")}</div>
             <div class="row">
                 <span class="label"><label for="${el}-input-organization">${msg("label.companyname")}:</label></span>
-                <span><input type="text" maxlength="256" size="30" id="${el}-input-organization" value="" <@immutablefield field="organization" /> /></span>
+                <span><input type="text" maxlength="256" size="30" id="${el}-input-organization"
+                             value="" <@immutablefield field="organization" /> /></span>
             </div>
             <div class="row">
-                <span class="label"><label for="${el}-input-companyaddress1">${msg("label.companyaddress")}:</label></span>
-                <span><input type="text" maxlength="256" size="30" id="${el}-input-companyaddress1" value="" <@immutablefield field="companyaddress1" /> /></span>
+                <span class="label"><label
+                        for="${el}-input-companyaddress1">${msg("label.companyaddress")}:</label></span>
+                <span><input type="text" maxlength="256" size="30" id="${el}-input-companyaddress1"
+                             value="" <@immutablefield field="companyaddress1" /> /></span>
             </div>
             <div class="row">
                 <span class="label"></span>
-                <span><input type="text" maxlength="256" size="30" id="${el}-input-companyaddress2" value="" <@immutablefield field="companyaddress2" /> /></span>
+                <span><input type="text" maxlength="256" size="30" id="${el}-input-companyaddress2"
+                             value="" <@immutablefield field="companyaddress2" /> /></span>
             </div>
             <div class="row">
                 <span class="label"></span>
-                <span><input type="text" maxlength="256" size="30" id="${el}-input-companyaddress3" value="" <@immutablefield field="companyaddress3" /> /></span>
+                <span><input type="text" maxlength="256" size="30" id="${el}-input-companyaddress3"
+                             value="" <@immutablefield field="companyaddress3" /> /></span>
             </div>
             <div class="row">
-                <span class="label"><label for="${el}-input-companypostcode">${msg("label.companypostcode")}:</label></span>
-                <span><input type="text" maxlength="256" size="30" id="${el}-input-companypostcode" value="" <@immutablefield field="companypostcode" /> /></span>
+                <span class="label"><label
+                        for="${el}-input-companypostcode">${msg("label.companypostcode")}:</label></span>
+                <span><input type="text" maxlength="256" size="30" id="${el}-input-companypostcode"
+                             value="" <@immutablefield field="companypostcode" /> /></span>
             </div>
             <div class="row">
                 <span class="label"><label for="${el}-input-companytelephone">${msg("label.companytelephone")}:</label></span>
-                <span><input type="text" maxlength="256" size="30" id="${el}-input-companytelephone" value="" <@immutablefield field="companytelephone" /> /></span>
+                <span><input type="text" maxlength="256" size="30" id="${el}-input-companytelephone"
+                             value="" <@immutablefield field="companytelephone" /> /></span>
             </div>
             <div class="row">
                 <span class="label"><label for="${el}-input-companyfax">${msg("label.companyfax")}:</label></span>
-                <span><input type="text" maxlength="256" size="30" id="${el}-input-companyfax" value="" <@immutablefield field="companyfax" /> /></span>
+                <span><input type="text" maxlength="256" size="30" id="${el}-input-companyfax"
+                             value="" <@immutablefield field="companyfax" /> /></span>
             </div>
             <div class="row">
                 <span class="label"><label for="${el}-input-companyemail">${msg("label.companyemail")}:</label></span>
-                <span><input type="text" maxlength="256" size="30" id="${el}-input-companyemail" value="" <@immutablefield field="companyemail" /> /></span>
+                <span><input type="text" maxlength="256" size="30" id="${el}-input-companyemail"
+                             value="" <@immutablefield field="companyemail" /> /></span>
             </div>
             </@markup>
 
