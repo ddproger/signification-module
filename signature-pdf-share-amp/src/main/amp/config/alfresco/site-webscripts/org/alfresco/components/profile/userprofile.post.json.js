@@ -20,12 +20,12 @@ function main()
             {
                 user.properties["avatar"] = ref;
             }
-        }else if (field.indexOf("-signimageref") != -1)
+        }else if (field.indexOf("-signatureref") != -1)
         {
             var signRef = json.get(field);
             if (signRef != null && signRef.length() != 0)
             {
-                user.properties["signImage"] = signRef;
+                user.properties["signature"] = signRef;
             }
         }
     }

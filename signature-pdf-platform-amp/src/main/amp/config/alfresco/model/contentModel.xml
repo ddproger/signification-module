@@ -339,28 +339,15 @@
                         <many>false</many>
                     </target>
                 </association>
-                <association name="cm:signImage">
+                <association name="cm:signature">
                     <source>
-                        <role>cm:signImageOf</role>
+                        <role>cm:signatureOf</role>
                         <mandatory>false</mandatory>
                         <many>false</many>
                     </source>
                     <target>
                         <class>cm:content</class>
-                        <role>cm:hasSignImage</role>
-                        <mandatory>false</mandatory>
-                        <many>false</many>
-                    </target>
-                </association>
-                <association name="cm:signKey">
-                    <source>
-                        <role>cm:signKeyOf</role>
-                        <mandatory>false</mandatory>
-                        <many>false</many>
-                    </source>
-                    <target>
-                        <class>cm:content</class>
-                        <role>cm:hasSignKey</role>
+                        <role>cm:hasSignature</role>
                         <mandatory>false</mandatory>
                         <many>false</many>
                     </target>
@@ -1384,15 +1371,15 @@
                 </child-association>
             </associations>
         </aspect>
-        <aspect name="cm:preferencesSignImage">
+        <aspect name="cm:preferencesSignature">
             <title>Preferences Signature image</title>
             <properties>
-                <property name="cm:preferencesSignImage">
+                <property name="cm:preferenceSignatureValues">
                     <type>d:content</type>
                 </property>
             </properties>
             <associations>
-                <child-association name="cm:preferencesSignImage">
+                <child-association name="cm:preferenceSignatureImage">
                     <source>
                         <mandatory>false</mandatory>
                         <many>false</many>

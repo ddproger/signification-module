@@ -448,7 +448,7 @@
 
                     // call to update the user object - photo changes take effect immediately!
                     var json = {};
-                    json[this.id + "-signimage"] = noderef;
+                    json[this.id + "-signatureref"] = noderef;
                     var config =
                         {
                             method: "POST",

@@ -371,33 +371,33 @@
                     Alfresco.util.Ajax.jsonRequest(config);
                 }
             }, /**
-         * Upload button click handler
-         *
-         * @method onUpload
-         * @param e {object} DomEvent
-         * @param p_obj {object} Object passed back from addListener method
-         */
-        onUploadSignImage: function UP_onUploadSignImage(e, p_obj) {
-            if (this.fileUpload === null) {
-                this.fileUpload = Alfresco.getFileUploadInstance();
-            }
+             * Upload button click handler
+             *
+             * @method onUpload
+             * @param e {object} DomEvent
+             * @param p_obj {object} Object passed back from addListener method
+             */
+            onUploadSignImage: function UP_onUploadSignImage(e, p_obj) {
+                if (this.fileUpload === null) {
+                    this.fileUpload = Alfresco.getFileUploadInstance();
+                }
 
-            // Show uploader for single file select - override the upload URL to use avatar upload service
-            var uploadConfig =
-                {
-                    flashUploadURL: "slingshot/profile/uploadsign/image",
-                    htmlUploadURL: "slingshot/profile/uploadsign/image.html",
-                    username: this.options.userId,
-                    mode: this.fileUpload.MODE_SINGLE_UPLOAD,
-                    onFileUploadComplete:
-                        {
-                            fn: this.onSignPictureUploadComplete,
-                            scope: this
-                        }
-                };
-            this.fileUpload.show(uploadConfig);
-            Event.preventDefault(e);
-        },
+                // Show uploader for single file select - override the upload URL to use avatar upload service
+                var uploadConfig =
+                    {
+                        flashUploadURL: "slingshot/profile/uploadsign/image",
+                        htmlUploadURL: "slingshot/profile/uploadsign/image.html",
+                        username: this.options.userId,
+                        mode: this.fileUpload.MODE_SINGLE_UPLOAD,
+                        onFileUploadComplete:
+                            {
+                                fn: this.onSignPictureUploadComplete,
+                                scope: this
+                            }
+                    };
+                this.fileUpload.show(uploadConfig);
+                Event.preventDefault(e);
+            },
 
             /**
              * Clear photo button click handler
@@ -448,7 +448,7 @@
 
                     // call to update the user object - photo changes take effect immediately!
                     var json = {};
-                    json[this.id + "-signimage"] = noderef;
+                    json[this.id + "-signatureref"] = noderef;
                     var config =
                         {
                             method: "POST",

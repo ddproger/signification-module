@@ -42,10 +42,10 @@
     <build>
         <plugins>
             <!-- Compress JavaScript files and store as *-min.js -->
-            <plugin>
+<!--            <plugin>
                 <groupId>net.alchim31.maven</groupId>
                 <artifactId>yuicompressor-maven-plugin</artifactId>
-            </plugin>
+            </plugin>-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>

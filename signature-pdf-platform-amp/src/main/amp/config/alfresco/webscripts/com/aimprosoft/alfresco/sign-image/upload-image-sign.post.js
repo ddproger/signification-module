@@ -47,16 +47,16 @@ function main() {
             return;
         }
 
-        if (!user.hasAspect("cm:preferencesSignImage")) {
-            user.addAspect("cm:preferencesSignImage");
+        if (!user.hasAspect("cm:preferencesSignature")) {
+            user.addAspect("cm:preferencesSignature");
         }
 
-        var assocs = user.childAssocs["cm:preferencesSignImage"];
+        var assocs = user.childAssocs["cm:preferenceSignatureImage"];
         if (assocs != null && assocs.length == 1) {
             assocs[0].remove();
         }
 
-        var image = user.createNode(filename, "cm:content", "cm:preferencesSignImage");
+        var image = user.createNode(filename, "cm:content", "cm:preferenceSignatureImage");
         image.properties.content.write(content);
         image.properties.content.guessMimetype(filename);
 
@@ -71,11 +71,11 @@ function main() {
         image.properties.content.encoding = "UTF-8";
         image.save();
 
-        assocs = user.associations["cm:signImage"];
+        assocs = user.associations["cm:signature"];
         if (assocs != null && assocs.length == 1) {
-            user.removeAssociation(assocs[0], "cm:signImage");
+            user.removeAssociation(assocs[0], "cm:signature");
         }
-        user.createAssociation(image, "cm:signImage");
+        user.createAssociation(image, "cm:signature");
 
         model.image = image;
     }

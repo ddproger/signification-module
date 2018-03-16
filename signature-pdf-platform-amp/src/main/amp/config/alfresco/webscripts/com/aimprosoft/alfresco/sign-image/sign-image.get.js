@@ -40,7 +40,7 @@ function main()
         else
         {
             // Retrieve the esign NodeRef for this person, if there is one.
-            var isignAssoc = person.assocs["cm:signImage"];
+            var isignAssoc = person.assocs["cm:signature"];
             if (isignAssoc != null)
             {
                 signImageNode = isignAssoc[0];

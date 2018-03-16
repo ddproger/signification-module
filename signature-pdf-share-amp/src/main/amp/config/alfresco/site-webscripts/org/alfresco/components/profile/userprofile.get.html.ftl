@@ -41,8 +41,8 @@
                     </#if>
                 </#if>
             </@markup>
-              <div class="viewcolumn">
             <@markup id="viewAbout">
+              <div class="viewcolumn">
                <div class="header-bar">${msg("label.about")}</div>
                <div class="photorow">
                    <div class="photo">
@@ -72,7 +72,7 @@
                 <div class="photorow">
                     <div class="photo">
                         <img class="signImg"
-                             src="${url.context}<#if profile.properties.signImage??>/proxy/alfresco/slingshot/profile/sign/image/${profile.name}<#else>/res/components/images/no-user-signature-image-photo-64.png</#if>"
+                             src="${url.context}/proxy/alfresco/slingshot/profile/sign/image/${profile.name}"
                              alt="signature image"/>
                     </div>
                     <div class="namelabel">Signature</div>
@@ -233,7 +233,7 @@
             <div class="photorow">
                 <div class="photo">
                     <img class="signImg"
-                         src="${url.context}<#if profile.properties.signImage??>/proxy/alfresco/slingshot/profile/sign/image/${profile.name}<#else>/res/components/images/no-user-signature-image-photo-64.png</#if>"
+                         src="${url.context}/proxy/alfresco/slingshot/profile/sign/image/${profile.name}"
                          alt="signature image"/>
                 </div>
                 <div class="photobtn">
