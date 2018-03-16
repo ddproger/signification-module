@@ -20,7 +20,6 @@
         <namespace uri="http://www.alfresco.org/model/exif/1.0" prefix="exif"/>
         <namespace uri="http://www.alfresco.org/model/audio/1.0" prefix="audio"/>
         <namespace uri="http://www.alfresco.org/model/webdav/1.0" prefix="webdav"/>
-        <namespace uri="http://www.aimprosoft.com/model/model/1.0" prefix="aim"/>
     </namespaces>
 
     <constraints>
@@ -340,9 +339,9 @@
                         <many>false</many>
                     </target>
                 </association>
-                <association name="aim:signImage">
+                <association name="cm:signImage">
                     <source>
-                        <role>aim:signImageOf</role>
+                        <role>cm:signImageOf</role>
                         <mandatory>false</mandatory>
                         <many>false</many>
                     </source>
@@ -353,9 +352,9 @@
                         <many>false</many>
                     </target>
                 </association>
-                <association name="aim:signKey">
+                <association name="cm:signKey">
                     <source>
-                        <role>aim:signKeyOf</role>
+                        <role>cm:signKeyOf</role>
                         <mandatory>false</mandatory>
                         <many>false</many>
                     </source>
@@ -1373,6 +1372,27 @@
             </properties>
             <associations>
                 <child-association name="cm:preferenceImage">
+                    <source>
+                        <mandatory>false</mandatory>
+                        <many>false</many>
+                    </source>
+                    <target>
+                        <class>cm:content</class>
+                        <mandatory>false</mandatory>
+                        <many>false</many>
+                    </target>
+                </child-association>
+            </associations>
+        </aspect>
+        <aspect name="cm:preferencesSignImage">
+            <title>Preferences Signature image</title>
+            <properties>
+                <property name="cm:preferencesSignImage">
+                    <type>d:content</type>
+                </property>
+            </properties>
+            <associations>
+                <child-association name="cm:preferencesSignImage">
                     <source>
                         <mandatory>false</mandatory>
                         <many>false</many>

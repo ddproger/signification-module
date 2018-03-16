@@ -1,0 +1,16 @@
+<webscript kind="org.alfresco.repository.content.stream">
+    <shortname>signCertificate</shortname>
+    <description>
+        Returns a user signature image in the format specified by the thumbnailname, or the "signature" preset if omitted.
+    </description>
+    <url>/slingshot/profile/sign/image</url>
+    <url>/slingshot/profile/sign/image/thumbnail/{thumbnailname}</url>
+    <url>/slingshot/profile/sign/image/{store_type}/{store_id}/{id}/thumbnail/{thumbnailname}</url>
+    <url>/slingshot/profile/sign/image/{store_type}/{store_id}/{id}</url>
+    <url>/slingshot/profile/sign/image/{username}/thumbnail/{thumbnailname}</url>
+    <url>/slingshot/profile/sign/image/{username}</url>
+    <format default="">argument</format>
+    <authentication>user</authentication>
+    <transaction>required</transaction>
+    <lifecycle>internal</lifecycle>
+</webscript>

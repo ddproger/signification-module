@@ -72,7 +72,7 @@
                 <div class="photorow">
                     <div class="photo">
                         <img class="signImg"
-                             src="${url.context}<#if profile.properties.signImage??>/proxy/alfresco/slingshot/profile/signature/${profile.name}<#else>/res/components/images/no-user-photo-64.png</#if>"
+                             src="${url.context}<#if profile.properties.signImage??>/proxy/alfresco/slingshot/profile/sign/image/${profile.name}<#else>/res/components/images/no-user-signature-image-photo-64.png</#if>"
                              alt="signature image"/>
                     </div>
                     <div class="namelabel">Signature</div>
@@ -233,7 +233,7 @@
             <div class="photorow">
                 <div class="photo">
                     <img class="signImg"
-                         src="${url.context}<#if profile.properties.signImage??>/proxy/alfresco/slingshot/profile/signature/${profile.name}<#else>/res/components/images/no-user-photo-64.png</#if>"
+                         src="${url.context}<#if profile.properties.signImage??>/proxy/alfresco/slingshot/profile/sign/image/${profile.name}<#else>/res/components/images/no-user-signature-image-photo-64.png</#if>"
                          alt="signature image"/>
                 </div>
                 <div class="photobtn">

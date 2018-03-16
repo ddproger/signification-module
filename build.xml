@@ -3,7 +3,7 @@
 
 
     <!-- Set these as required -->
-    <property name="alfresco.install" value="/home/gerasymiuk/alfresco-content-services-community-full"/>
+    <property name="alfresco.install" value="/home/dgerasymiuk/alfresco--community-test"/>
     <property name="war.file" value="${alfresco.install}/tomcat/webapps"/>
     <property name="module.platform.id" value="signature-pdf-platform-amp"/>
     <property name="module.platform.version" value="1.0-SNAPSHOT"/>
@@ -31,6 +31,86 @@
         <java jar="${mmt.path}" fork="true" failonerror="false">
             <arg line="${mmt.platform.install} "/>
         </java>
+    </target>
+
+
+    <property name="ml-ant-http.jar" value="ml-ant-http-1.1.1.jar"/>
+
+    <fileset id="libs" dir=".">
+        <include name="${ml-ant-http.jar}"/>
+    </fileset>
+
+    <path id="classpath">
+        <fileset refid="libs"/>
+    </path>
+
+    <taskdef name="http" classname="org.missinglink.ant.task.http.HttpClientTask">
+        <classpath refid="classpath"/>
+    </taskdef>
+    <target name="4. Enable Alfresco Debugger">
+
+        <http url="http://localhost:8080/alfresco/s/api/javascript/debugger"
+              method="POST"
+              printrequest="false"
+              printrequestheaders="false"
+              printresponse="false"
+              printresponseheaders="false"
+              expected="200"
+              failonunexpected="true">
+            <credentials username="admin" password="admin"/>
+            <query>
+                <parameter name="visible" value="true"/>
+                <parameter name="submit" value="Enable"/>
+            </query>
+        </http>
+
+        <http url="http://localhost:8080/alfresco/service/index"
+              method="POST"
+              printrequest="false"
+              printrequestheaders="false"
+              printresponse="false"
+              printresponseheaders="false"
+              expected="200"
+              failonunexpected="true">
+            <credentials username="admin" password="admin"/>
+            <query>
+                <parameter name="reset" value="on"/>
+            </query>
+        </http>
+
+    </target>
+
+    <target name="4.2 Enable Share Debugger">
+
+        <http url="http://localhost:8080/share/page/api/javascript/debugger"
+              method="POST"
+              printrequest="false"
+              printrequestheaders="false"
+              printresponse="false"
+              printresponseheaders="false"
+              expected="200"
+              failonunexpected="true">
+            <credentials username="admin" password="admin"/>
+            <query>
+                <parameter name="visible" value="true"/>
+                <parameter name="submit" value="Enable"/>
+            </query>
+        </http>
+
+        <http url="http://localhost:8080/share/page/index"
+              method="POST"
+              printrequest="false"
+              printrequestheaders="false"
+              printresponse="false"
+              printresponseheaders="false"
+              expected="200"
+              failonunexpected="true">
+            <credentials username="admin" password="admin"/>
+            <query>
+                <parameter name="reset" value="on"/>
+            </query>
+        </http>
+
     </target>
 
 </project>

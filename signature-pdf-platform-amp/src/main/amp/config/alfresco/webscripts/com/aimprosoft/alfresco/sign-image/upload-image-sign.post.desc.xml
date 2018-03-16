@@ -1,0 +1,9 @@
+<webscript>
+  <shortname>Signature image Upload</shortname>
+  <description>Upload signature image file and apply to person preferencesSignImage</description>
+  <format default="json" />
+  <authentication>user</authentication>
+  <transaction>required</transaction>
+  <url>/slingshot/profile/uploadsign/image</url>
+  <lifecycle>internal</lifecycle>
+</webscript>

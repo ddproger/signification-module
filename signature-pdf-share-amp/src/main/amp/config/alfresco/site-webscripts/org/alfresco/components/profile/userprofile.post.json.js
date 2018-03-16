@@ -23,9 +23,9 @@ function main()
         }else if (field.indexOf("-signimageref") != -1)
         {
             var signRef = json.get(field);
-            if (signRef != null && ref.length() != 0)
+            if (signRef != null && signRef.length() != 0)
             {
-                user.properties["signimage"] = signRef;
+                user.properties["signImage"] = signRef;
             }
         }
     }

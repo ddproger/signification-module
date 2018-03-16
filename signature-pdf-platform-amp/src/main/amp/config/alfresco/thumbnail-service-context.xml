@@ -201,6 +201,48 @@
         <property name="failureHandlingOptions" ref="standardFailureOptions"/>
     </bean>
 
+    <!-- User avatar 64x64 signature image thumbnail options -->
+    <!-- Note that this will auto-register with parent="baseThumbnailDefinition" in the future -->
+    <bean id="thumbnailDefinitionSignature" class="org.alfresco.repo.thumbnail.ThumbnailDefinition">
+        <property name="name" value="signature" />
+        <property name="mimetype" value="image/png"/>
+        <property name="transformationOptions">
+            <bean parent="defaultImageTransformationOptions">
+                <property name="resizeOptions">
+                    <bean parent="defaultImageResizeOptions">
+                        <property name="width" value="64"/>
+                        <property name="height" value="64"/>
+                        <property name="allowEnlargement" value="false" />
+                    </bean>
+                </property>
+            </bean>
+        </property>
+        <property name="placeHolderResourcePath" value="alfresco/thumbnail/thumbnail_placeholder_sign_image.png" />
+        <property name="runAs" value="System"/>
+        <property name="failureHandlingOptions" ref="standardFailureOptions"/>
+    </bean>
+
+    <!-- User avatar 32x32 signature image thumbnail options -->
+    <!-- Note that this will auto-register with parent="baseThumbnailDefinition" in the future -->
+    <bean id="thumbnailDefinitionSignature32" class="org.alfresco.repo.thumbnail.ThumbnailDefinition">
+        <property name="name" value="signature32" />
+        <property name="mimetype" value="image/png"/>
+        <property name="transformationOptions">
+            <bean parent="defaultImageTransformationOptions">
+                <property name="resizeOptions">
+                    <bean parent="defaultImageResizeOptions">
+                        <property name="width" value="32"/>
+                        <property name="height" value="32"/>
+                        <property name="allowEnlargement" value="false" />
+                    </bean>
+                </property>
+            </bean>
+        </property>
+        <property name="placeHolderResourcePath" value="alfresco/thumbnail/thumbnail_placeholder_sign_image32.png" />
+        <property name="runAs" value="System"/>
+        <property name="failureHandlingOptions" ref="standardFailureOptions"/>
+    </bean>
+
 
     <!-- Web Preview thumbnail options -->
     <!-- Note that this will auto-register with parent="baseThumbnailDefinition" in the future -->
@@ -245,6 +287,9 @@
                 <ref bean="thumbnailDefinitionImgpreview" />
                 <ref bean="thumbnailDefinitionAvatar" />
                 <ref bean="thumbnailDefinitionAvatar32" />
+
+                <ref bean="thumbnailDefinitionSignature" />
+                <ref bean="thumbnailDefinitionSignature32" />
                 <ref bean="thumbnailDefinitionPDFpreview" />
 
                 <ref bean="thumbnailDefinitionWebpreview" />

@@ -94,11 +94,11 @@
                     this.widgets.upload = Alfresco.util.createYUIButton(this, "button-upload", this.onUpload);
                     this.widgets.clearphoto = Alfresco.util.createYUIButton(this, "button-clearphoto", this.onClearPhoto);
                     //Sign image button
-                    this.widgets.upload = Alfresco.util.createYUIButton(this, "sign-image-upload", this.onUploadSignKey);
-                    this.widgets.clearphoto = Alfresco.util.createYUIButton(this, "button-clear-sign-image", this.onClearSignKey);
+                    this.widgets.upload = Alfresco.util.createYUIButton(this, "sign-image-upload", this.onUploadSignImage);
+                    this.widgets.clearphoto = Alfresco.util.createYUIButton(this, "button-clear-sign-image", this.onClearSignImage);
                     //Sign key button
-                    this.widgets.upload = Alfresco.util.createYUIButton(this, "sign-key-upload", this.onUploadSignImage);
-                    this.widgets.clearphoto = Alfresco.util.createYUIButton(this, "button-clear-sign-key", this.onClearSignImage);
+                    this.widgets.upload = Alfresco.util.createYUIButton(this, "sign-key-upload", this.onUploadSignKey);
+                    this.widgets.clearphoto = Alfresco.util.createYUIButton(this, "button-clear-sign-key", this.onClearSignKey);
 
                     this.widgets.edit = Alfresco.util.createYUIButton(this, "button-edit", this.onEditProfile);
                     this.widgets.save = Alfresco.util.createYUIButton(this, "button-save", null,
@@ -299,8 +299,8 @@
                 // Show uploader for single file select - override the upload URL to use avatar upload service
                 var uploadConfig =
                     {
-                        flashUploadURL: "slingshot/profile/uploadsignkey",
-                        htmlUploadURL: "slingshot/profile/uploadsignkey.html",
+                        flashUploadURL: "slingshot/profile/uploadsign/key",
+                        htmlUploadURL: "slingshot/profile/uploadsign/key.html",
                         username: this.options.userId,
                         mode: this.fileUpload.MODE_SINGLE_UPLOAD,
                         onFileUploadComplete:
@@ -353,10 +353,10 @@
                     var noderef = complete.successful[0].nodeRef;
 
                     // replace all avatar image URLs with the updated one
-                    var photos = Dom.getElementsByClassName("photoimg", "img");
+                    var photos = Dom.getElementsByClassName("signKey", "img");
                     for (i in photos) {
                         photos[i].src = Alfresco.constants.PROXY_URI + "api/node/" + noderef.replace("://", "/") +
-                            "/content/thumbnails/signkey?c=force";
+                            "/content/thumbnails/signature?c=force";
                     }
 
                     // call to update the user object - photo changes take effect immediately!
@@ -385,8 +385,8 @@
             // Show uploader for single file select - override the upload URL to use avatar upload service
             var uploadConfig =
                 {
-                    flashUploadURL: "slingshot/profile/uploadsignimage",
-                    htmlUploadURL: "slingshot/profile/uploadsignimage.html",
+                    flashUploadURL: "slingshot/profile/uploadsign/image",
+                    htmlUploadURL: "slingshot/profile/uploadsign/image.html",
                     username: this.options.userId,
                     mode: this.fileUpload.MODE_SINGLE_UPLOAD,
                     onFileUploadComplete:
@@ -443,7 +443,7 @@
                     var photos = Dom.getElementsByClassName("signImg", "img");
                     for (i in photos) {
                         photos[i].src = Alfresco.constants.PROXY_URI + "api/node/" + noderef.replace("://", "/") +
-                            "/content/thumbnails/signimage?c=force";
+                            "/content/thumbnails/signature?c=force";
                     }
 
                     // call to update the user object - photo changes take effect immediately!
